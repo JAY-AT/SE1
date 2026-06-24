@@ -1,0 +1,24 @@
+<section class="panel">
+  <div class="panel-head">
+    <p class="eyebrow">People</p>
+    <h2>Users</h2>
+    <p>Review customer accounts and update access from the same dark control language.</p>
+  </div>
+
+  <div class="list">
+    <article class="user-card" *ngFor="let user of users$ | async">
+      <div>
+        <p class="name">{{ user.first_name }} {{ user.last_name }}</p>
+        <p class="meta">{{ user.email }}</p>
+      </div>
+
+      <div class="actions">
+        <span class="role">{{ user.role }}</span>
+        <select [value]="'active'" (change)="statusChange.emit({ id: user.id, status: $any($event.target).value })">
+          <option value="active">Active</option>
+          <option value="suspended">Suspended</option>
+        </select>
+      </div>
+    </article>
+  </div>
+</section>

@@ -1,0 +1,61 @@
+@import '../login/login.scss';
+
+.signup-page {
+  background:
+    radial-gradient(circle at 15% 15%, rgba(212, 165, 125, 0.14), transparent 18%),
+    radial-gradient(circle at 84% 18%, rgba(227, 186, 140, 0.08), transparent 16%),
+    linear-gradient(180deg, #120c0a 0%, #1a110e 52%, #120c0a 100%);
+}
+
+.signup-card {
+  max-width: 82rem;
+}
+
+.signup-brand {
+  gap: 2.2rem;
+}
+
+.signup-brand__content h1 {
+  max-width: 34rem;
+}
+
+.signup-highlights {
+  grid-template-columns: 1fr;
+}
+
+.signup-highlight {
+  align-items: start;
+  grid-template-columns: auto 1fr;
+  display: grid;
+}
+
+.signup-highlight__title {
+  margin: 0 0 0.35rem;
+  color: #e7c8ae;
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.signup-highlight p:last-child {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.55;
+  color: rgba(247, 232, 219, 0.8);
+}
+
+.signup-form {
+  gap: 1rem;
+}
+
+.signup-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .signup-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

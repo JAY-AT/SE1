@@ -1,0 +1,15 @@
+<section class="content-hero">
+  <div class="hero-copy">
+    <p class="eyebrow">Current view</p>
+    <h2>{{ activeSectionLabel }}</h2>
+    <p>{{ activeSectionDescription }}</p>
+  </div>
+
+  <div class="hero-metrics" *ngIf="metrics.length > 0">
+    <article class="metric" *ngFor="let metric of metrics">
+      <span class="label">{{ metric.label }}</span>
+      <strong>{{ metric.value }}</strong>
+      <small>{{ metric.helper }}</small>
+    </article>
+  </div>
+</section>

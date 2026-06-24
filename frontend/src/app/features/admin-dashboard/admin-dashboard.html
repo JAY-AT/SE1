@@ -1,0 +1,44 @@
+<div class="admin-shell">
+  <div class="admin-shell__nav" [class.is-hidden]="!showNavigation">
+    <app-navigation context="admin" (logout)="logout()"></app-navigation>
+  </div>
+
+  <div class="layout">
+    <app-admin-command-center
+      [activeSection]="activeSection"
+      (sectionChange)="setSection($event)">
+    </app-admin-command-center>
+
+    <main class="content" (scroll)="onContentScroll($event)">
+      <app-admin-content-hero
+        [activeSectionLabel]="activeSectionLabel"
+        [activeSectionDescription]="activeSectionDescription"
+        [metrics]="heroMetrics">
+      </app-admin-content-hero>
+
+      <div class="workspace">
+        <app-admin-analytics *ngIf="activeSection === 'analytics'"></app-admin-analytics>
+
+        <app-admin-products
+          *ngIf="activeSection === 'products'"
+          [isLoading]="isLoading"
+          [errorMessage]="errorMessage"
+          (refreshRequested)="reloadProducts()">
+        </app-admin-products>
+
+        <app-admin-orders *ngIf="activeSection === 'orders'"></app-admin-orders>
+
+        <app-admin-users
+          *ngIf="activeSection === 'users'"
+          (statusChange)="updateUserStatus($event.id, $event.status)">
+        </app-admin-users>
+
+        <app-admin-settings *ngIf="activeSection === 'settings'"></app-admin-settings>
+
+        <app-admin-site-links *ngIf="activeSection === 'site-links'"></app-admin-site-links>
+
+        <app-admin-chat-support *ngIf="activeSection === 'chat-support'"></app-admin-chat-support>
+      </div>
+    </main>
+  </div>
+</div>

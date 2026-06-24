@@ -1,0 +1,62 @@
+<app-navigation context="checkout" (logout)="logout()"></app-navigation>
+
+<main class="checkout-page">
+  <section class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Checkout</p>
+        <h1>Complete your order</h1>
+      </div>
+
+      <button type="button" class="back" (click)="backToDashboard()">Back to shop</button>
+    </header>
+
+    <app-checkout-summary
+      [cartItems]="cartItems"
+      [subtotal]="subtotal"
+      [totalQuantity]="totalQuantity"
+      [total]="total"
+      (quantityChange)="adjustQuantity($event.productId, $event.delta)"
+      (removeItem)="removeItem($event)"
+    ></app-checkout-summary>
+
+    <form class="form-panel" [formGroup]="checkoutForm" (ngSubmit)="submitOrder()">
+      <app-checkout-shipping
+        [checkoutForm]="checkoutForm"
+        [isOpen]="isShippingOpen"
+        (toggled)="toggleShipping()"
+      ></app-checkout-shipping>
+
+      <div class="payment-panel">
+        <div class="section-title">
+          <h2>Payment</h2>
+          <p>Choose how you want to pay for this order.</p>
+        </div>
+
+        <div class="payment-options">
+          <label class="payment-option" [class.active]="selectedPaymentMethod === 'cod'">
+            <input type="radio" formControlName="paymentMethod" value="cod">
+            <span>
+              <strong>Cash on Delivery</strong>
+              <small>Pay in cash when your order arrives.</small>
+            </span>
+          </label>
+
+          <label class="payment-option" [class.active]="selectedPaymentMethod === 'online'">
+            <input type="radio" formControlName="paymentMethod" value="online">
+            <span>
+              <strong>Online Payment</strong>
+              <small>Pay now through the app's online payment flow.</small>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+      <button type="submit" class="submit" [disabled]="isSubmitting">
+        {{ submitLabel }}
+      </button>
+    </form>
+  </section>
+</main>

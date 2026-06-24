@@ -1,0 +1,103 @@
+<section class="panel coffee-theme">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Operations</p>
+      <h2>Orders</h2>
+      <p>Search and process the queue from a darker, calmer control surface.</p>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <input
+      type="text"
+      placeholder="Search order ID or user..."
+      (input)="onSearch($any($event.target).value)"
+    />
+
+    <select (change)="onFilter($any($event.target).value)">
+      <option value="all">All Orders</option>
+      <option value="pending">Pending</option>
+      <option value="accepted">Brewing</option>
+      <option value="completed">Served</option>
+      <option value="cancelled">Cancelled</option>
+    </select>
+
+    <select (change)="onSort($any($event.target).value)">
+      <option value="newest">Newest First</option>
+      <option value="alpha">Alphabetical</option>
+    </select>
+  </div>
+
+  <ng-container *ngIf="orders$ | async as orders">
+    <div class="empty" *ngIf="orders.length === 0">
+      No coffee orders found.
+    </div>
+
+    <div class="list">
+      <article class="order-card" *ngFor="let order of orders">
+        <div class="header">
+          <div>
+            <h3 class="order-id">#{{ order.id }}</h3>
+            <p class="meta">
+              User {{ order.userId }} · {{ order.createdAt | date:'short' }}
+            </p>
+          </div>
+
+          <div class="amount">₱{{ order.total }}</div>
+        </div>
+
+        <div
+          class="status-chip"
+          *ngIf="!(order.paymentMethod === 'cod' && order.paymentStatus !== 'paid')"
+          [ngClass]="order.status">
+          {{ order.status }}
+        </div>
+
+        <div class="payment-chip">
+          Payment: {{ paymentMethodLabel(order.paymentMethod) }} - {{ paymentStatusLabel(order) }}
+        </div>
+
+        <div class="items">
+          <div class="item" *ngFor="let item of order.items">
+            <span>{{ item.product.name }}</span>
+            <span>x{{ item.quantity }}</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button
+            class="btn btn-accept"
+            *ngIf="order.status === 'paid' || order.status === 'pending'"
+            (click)="updateOrder(order.userId, order.id, 'accepted')"
+          >
+            Accept
+          </button>
+
+          <button
+            class="btn btn-brew"
+            (click)="updateOrder(order.userId, order.id, 'shipped')"
+            *ngIf="order.status === 'accepted'"
+          >
+            Ship
+          </button>
+
+          <button
+            class="btn btn-brew"
+            *ngIf="order.status === 'pending'"
+            (click)="updateOrder(order.userId, order.id, 'cancelled')"
+          >
+            Reject
+          </button>
+
+          <button
+            class="btn btn-cancel"
+            *ngIf="order.status !== 'pending' && order.status !== 'cancelled'"
+            (click)="updateOrder(order.userId, order.id, 'cancelled')"
+          >
+            Cancel
+          </button>
+        </div>
+      </article>
+    </div>
+  </ng-container>
+</section>
